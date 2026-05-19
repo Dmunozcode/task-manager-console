@@ -4,7 +4,7 @@ public class Task {
     private String description;
     private boolean completed;
 
-    public Task(int id, String title, String description, boolean completed) {
+    public Task(int id, String title, String description) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -13,10 +13,6 @@ public class Task {
 
     public int getId() {
         return id;
-    }
-
-    public void setId(int id) {
-        this.id = id;
     }
 
     public String getTitle() {
@@ -52,7 +48,7 @@ public class Task {
                 ", completed=" + completed +
                 '}';
     }
-    public void markAsCompleted(){
+    public void markAsCompleted() {
         this.completed = true;
     }
 }
