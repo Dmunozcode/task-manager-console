@@ -20,7 +20,7 @@ public class Menu {
 
         do {
             showMenu();
-            option = scanner.nextInt();
+            option = readInt();
 
             switch (option){
                 case 1:
@@ -49,7 +49,7 @@ public class Menu {
         System.out.println("Exiting app...");
     }
 
-    public void showMenu(){
+    private void showMenu(){
         System.out.println("1. Add task ");
         System.out.println("2. List tasks ");
         System.out.println("3. Find task by id ");
@@ -58,18 +58,17 @@ public class Menu {
         System.out.println("6. Exit ");
 
     }
-    public void handleAddTask(){
+    private void handleAddTask(){
         System.out.println("Id: ");
-        int id = scanner.nextInt();
-        scanner.nextLine();
+        int id = readInt();
         System.out.println("Title: ");
-        String title = scanner.nextLine();
+        String title = readNonEmptyText();
         System.out.println("Description: ");
-        String description = scanner.nextLine();
+        String description = readNonEmptyText();
         taskService.addTask(id,title,description);
         System.out.println("Task added successfully");
     }
-    public void handleListTasks(){
+    private void handleListTasks(){
         ArrayList<Task> tasks = taskService.getTasks();
 
         if (tasks.isEmpty()) {
@@ -80,9 +79,9 @@ public class Menu {
             }
         }
     }
-    public void handleFindTaskById(){
+    private void handleFindTaskById(){
         System.out.println("Id: ");
-        int id = scanner.nextInt();
+        int id = readInt();
         Task task = taskService.findTaskById(id);
         if (task == null) {
             System.out.println("Task not found");
@@ -90,22 +89,48 @@ public class Menu {
             System.out.println(task);
         }
     }
-    public void handleMarkTaskAsCompleted(){
+    private void handleMarkTaskAsCompleted(){
         System.out.println("Id: ");
-        int id = scanner.nextInt();
+        int id = readInt();
         if (taskService.markTaskAsCompleted(id)) {
             System.out.println("Task marked as completed");
         } else {
             System.out.println("Task not found");
         }
     }
-    public void handleDeleteTask(){
+    private void handleDeleteTask(){
         System.out.println("Id: ");
-        int id = scanner.nextInt();
+        int id = readInt();
         if (taskService.deleteTask(id)) {
             System.out.println("Task deleted successfully");
         } else {
             System.out.println("Task not found");
+        }
+    }
+    private int readInt(){
+        while (true) {
+            String input = scanner.nextLine();
+
+            if (input.isBlank()) {
+                System.out.println("Input cannot be empty. Try again");
+                continue;
+            }
+            try {
+                return Integer.parseInt(input);
+            } catch (NumberFormatException e){
+                System.out.println("Invalid number. Try again. ");
+            }
+        }
+    }
+    private String readNonEmptyText(){
+        while(true){
+            String text = scanner.nextLine();
+
+            if(!text.isBlank()){
+                return text;
+            }
+
+            System.out.println("Text cannot be empty. Try again.");
         }
     }
 }
