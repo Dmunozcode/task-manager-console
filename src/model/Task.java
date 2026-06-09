@@ -1,16 +1,22 @@
 package model;
 
+import java.time.LocalDate;
+
 public class Task {
     private int id;
     private String title;
     private String description;
     private boolean completed;
+    private LocalDate createdAt;
+    private Priority priority;
 
-    public Task(int id, String title, String description) {
+    public Task(int id, String title, String description, Priority priority) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.completed = false;
+        this.createdAt = LocalDate.now();
+        this.priority = priority;
     }
 
     public int getId() {
@@ -41,6 +47,16 @@ public class Task {
         this.completed = completed;
     }
 
+    public LocalDate getCreatedAt() { return createdAt; }
+
+    public Priority getPriority() {
+        return priority;
+    }
+
+    public void setPriority(Priority priority) {
+        this.priority = priority;
+    }
+
     @Override
     public String toString() {
         return "Task{" +
@@ -48,8 +64,11 @@ public class Task {
                 ", title='" + title + '\'' +
                 ", description='" + description + '\'' +
                 ", completed=" + completed +
+                ", createdAt=" + createdAt +
+                ", priority=" + priority +
                 '}';
     }
+
     public void markAsCompleted() {
         this.completed = true;
     }
