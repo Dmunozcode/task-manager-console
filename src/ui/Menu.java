@@ -66,7 +66,6 @@ public class Menu {
         System.out.println("6. Filter by priority");
         System.out.println("7. Filter by status");
         System.out.println("8. Exit ");
-
     }
     private void handleAddTask(){
         System.out.println("Id: ");

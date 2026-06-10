@@ -2,27 +2,26 @@ package service;
 
 import model.Priority;
 import model.Task;
+import repository.TaskRepository;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class TaskService {
-    private List<Task> tasks = new ArrayList<>();
+    private TaskRepository taskRepository;
+
+    public TaskService(TaskRepository taskRepository){
+        this.taskRepository = taskRepository;
+    }
 
     public void addTask(int id, String title, String description, Priority priority){
         Task task = new Task(id,title,description, priority);
-        tasks.add(task);
+        taskRepository.save(task);
     }
     public List<Task> getTasks(){
-        return tasks;
+        return taskRepository.findAll();
     }
     public Task findTaskById(int id){
-        for (Task task : tasks){
-            if(task.getId() == id){
-                return task;
-            }
-        }
-        return null;
+        return taskRepository.findById(id);
     }
     public boolean markTaskAsCompleted(int id){
         Task taskToComplete = findTaskById(id);
@@ -41,17 +40,18 @@ public class TaskService {
             return false;
         }
 
-        tasks.remove(taskToDelete);
-        return true;
+        return taskRepository.delete(taskToDelete);
 
     }
     public List<Task> filterByPriority(Priority priority){
-        return tasks.stream()
+        return taskRepository.findAll()
+                .stream()
                 .filter(task -> task.getPriority() == priority)
                 .toList();
     }
     public List<Task> filterByStatus(boolean completed){
-        return tasks.stream()
+        return taskRepository.findAll()
+                .stream()
                 .filter(task -> task.isCompleted() == completed)
                 .toList();
     }
