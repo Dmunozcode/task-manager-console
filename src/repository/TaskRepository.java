@@ -6,15 +6,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TaskRepository {
-    private List<Task> tasks = new ArrayList<>();
+    private final List<Task> tasks = new ArrayList<>();
 
-    public void save (Task task){
+    public void save(Task task) {
         tasks.add(task);
     }
-    public List<Task> findAll(){
-        return tasks;
+    public List<Task> findAll() {
+        return new ArrayList<>(tasks);
     }
-    public Task findById(int id){
+    public Task findById(int id) {
         for (Task task : tasks){
             if(task.getId() == id ){
                 return task;
@@ -22,7 +22,7 @@ public class TaskRepository {
         }
         return null;
     }
-    public boolean delete(Task task){
+    public boolean delete(Task task) {
         return tasks.remove(task);
     }
 }

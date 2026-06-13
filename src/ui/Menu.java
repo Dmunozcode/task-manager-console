@@ -3,28 +3,26 @@ package ui;
 import model.Priority;
 import model.Task;
 import service.TaskService;
-
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 public class Menu {
-    private Scanner scanner;
-    private TaskService taskService;
+    private final Scanner scanner;
+    private final TaskService taskService;
 
     public Menu(TaskService taskService) {
         this.taskService = taskService;
         this.scanner = new Scanner(System.in);
     }
 
-    public void start(){
+    public void start() {
         int option;
 
         do {
             showMenu();
             option = readInt();
 
-            switch (option){
+            switch (option) {
                 case 1:
                     handleAddTask();
                     break;
@@ -57,7 +55,7 @@ public class Menu {
         System.out.println("Exiting app...");
     }
 
-    private void showMenu(){
+    private void showMenu() {
         System.out.println("1. Add task ");
         System.out.println("2. List tasks ");
         System.out.println("3. Find task by id ");
@@ -67,7 +65,7 @@ public class Menu {
         System.out.println("7. Filter by status");
         System.out.println("8. Exit ");
     }
-    private void handleAddTask(){
+    private void handleAddTask() {
         System.out.println("Id: ");
         int id = readInt();
         System.out.println("Title: ");
@@ -76,21 +74,16 @@ public class Menu {
         String description = readNonEmptyText();
         System.out.println("Priority: ");
         Priority priority = readPriority();
-        taskService.addTask(id,title,description, priority);
-        System.out.println("Task added successfully");
-    }
-    private void handleListTasks(){
-        List<Task> tasks = taskService.getTasks();
-
-        if (tasks.isEmpty()) {
-            System.out.println("Empty list");
+        if(taskService.addTask(id, title, description, priority)) {
+            System.out.println("Task added successfully");
         } else {
-            for (Task task : tasks){
-                System.out.println(task);
-            }
+            System.out.println("Task ID already exists");
         }
     }
-    private void handleFindTaskById(){
+    private void handleListTasks() {
+        displayTasks(taskService.getTasks());
+    }
+    private void handleFindTaskById() {
         System.out.println("Id: ");
         int id = readInt();
         Task task = taskService.findTaskById(id);
@@ -100,7 +93,7 @@ public class Menu {
             System.out.println(task);
         }
     }
-    private void handleMarkTaskAsCompleted(){
+    private void handleMarkTaskAsCompleted() {
         System.out.println("Id: ");
         int id = readInt();
         if (taskService.markTaskAsCompleted(id)) {
@@ -109,7 +102,7 @@ public class Menu {
             System.out.println("Task not found");
         }
     }
-    private void handleDeleteTask(){
+    private void handleDeleteTask() {
         System.out.println("Id: ");
         int id = readInt();
         if (taskService.deleteTask(id)) {
@@ -118,7 +111,7 @@ public class Menu {
             System.out.println("Task not found");
         }
     }
-    private void handleFilterByPriority(){
+    private void handleFilterByPriority() {
         System.out.println("Priority (LOW, MEDIUM, HIGH): ");
         Priority priority = readPriority();
 
@@ -127,7 +120,7 @@ public class Menu {
 
         displayTasks(filteredTasks);
     }
-    private void handleFilterByStatus(){
+    private void handleFilterByStatus() {
         System.out.println("1. Completed tasks");
         System.out.println("2. Pending tasks");
 
@@ -141,7 +134,7 @@ public class Menu {
             System.out.println("Invalid option");
         }
     }
-    private int readInt(){
+    private int readInt() {
         while (true) {
             String input = scanner.nextLine();
 
@@ -156,7 +149,7 @@ public class Menu {
             }
         }
     }
-    private String readNonEmptyText(){
+    private String readNonEmptyText() {
         while(true){
             String text = scanner.nextLine();
 
@@ -167,23 +160,23 @@ public class Menu {
             System.out.println("Text cannot be empty. Try again.");
         }
     }
-    private Priority readPriority(){
+    private Priority readPriority() {
         while (true) {
             String input = readNonEmptyText();
 
             try{
                 return Priority.valueOf(input.toUpperCase());
-            } catch (IllegalArgumentException e){
+            } catch (IllegalArgumentException e) {
                 System.out.println("Invalid priority. Choose LOW, MEDIUM or HIGH");
             }
         }
     }
-    private void displayTasks(List<Task> tasks){
-        if (tasks.isEmpty()){
+    private void displayTasks(List<Task> tasks) {
+        if (tasks.isEmpty()) {
             System.out.println("No tasks found");
             return;
         }
-        for (Task task : tasks){
+        for (Task task : tasks) {
             System.out.println(task);
         }
     }

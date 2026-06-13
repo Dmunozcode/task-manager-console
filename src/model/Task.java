@@ -3,11 +3,11 @@ package model;
 import java.time.LocalDate;
 
 public class Task {
-    private int id;
+    private final int id;
     private String title;
     private String description;
     private boolean completed;
-    private LocalDate createdAt;
+    private final LocalDate createdAt;
     private Priority priority;
 
     public Task(int id, String title, String description, Priority priority) {
@@ -43,10 +43,6 @@ public class Task {
         return completed;
     }
 
-    public void setCompleted(boolean completed) {
-        this.completed = completed;
-    }
-
     public LocalDate getCreatedAt() { return createdAt; }
 
     public Priority getPriority() {
@@ -55,6 +51,10 @@ public class Task {
 
     public void setPriority(Priority priority) {
         this.priority = priority;
+    }
+
+    public void markAsCompleted() {
+        this.completed = true;
     }
 
     @Override
@@ -69,7 +69,4 @@ public class Task {
                 '}';
     }
 
-    public void markAsCompleted() {
-        this.completed = true;
-    }
 }
